@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Transition } from "react-spring";
 
+import { GAME_HEIGHT, GAME_WIDTH } from "./config";
+
 const LEFT_UI_WIDTH = 50;
 
 interface IUIProps {
@@ -22,7 +24,7 @@ class UI extends Component<IUIProps> {
   }
 
   calculateLeftOffset = () => {
-    return window.innerWidth / 2 - 400;
+    return window.innerWidth / 2 - GAME_WIDTH / 2;
   };
 
   render() {
@@ -36,7 +38,7 @@ class UI extends Component<IUIProps> {
             position: "absolute",
             left: leftOffset,
             width: LEFT_UI_WIDTH,
-            height: 640,
+            height: GAME_HEIGHT,
             backgroundColor: "yellow",
             opacity: 0.5
           }}
@@ -56,7 +58,7 @@ class UI extends Component<IUIProps> {
                   style={{
                     ...props,
                     position: "absolute",
-                    width: 800,
+                    width: GAME_WIDTH,
                     height: 100,
                     top: 0,
                     backgroundColor: "#fcfcfc"
