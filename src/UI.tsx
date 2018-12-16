@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Transition } from "react-spring";
-import { on } from "cluster";
 
 const LEFT_UI_WIDTH = 50;
 
