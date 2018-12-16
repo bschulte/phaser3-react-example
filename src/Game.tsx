@@ -3,6 +3,8 @@ import ExampleScene from "./scenes/exampleScene";
 
 import * as React from "react";
 
+import { GAME_HEIGHT, GAME_WIDTH } from "./config";
+
 export interface IGameProps {}
 
 export default class IGame extends React.Component<IGameProps, any> {
@@ -10,8 +12,8 @@ export default class IGame extends React.Component<IGameProps, any> {
     const config: GameConfig = {
       type: Phaser.AUTO,
       pixelArt: true,
-      width: 800,
-      height: 640,
+      width: GAME_WIDTH,
+      height: GAME_HEIGHT,
       parent: "phaser-game",
       scene: [ExampleScene]
     };
