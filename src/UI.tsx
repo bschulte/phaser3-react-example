@@ -18,13 +18,12 @@ class UI extends Component<IUIProps> {
     this.setState({ leftOffset: this.calculateLeftOffset() });
 
     window.addEventListener("resize", () => {
-      this.calculateLeftOffset();
+      this.setState({ leftOffset: this.calculateLeftOffset() });
     });
   }
 
   calculateLeftOffset = () => {
-    const offset = window.innerWidth / 2 - 405;
-    return offset;
+    return window.innerWidth / 2 - 400;
   };
 
   render() {
