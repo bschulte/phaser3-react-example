@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Transition } from "react-spring";
+import { useTransition, animated } from "react-spring";
 
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 
@@ -10,67 +10,61 @@ interface IUIProps {
   showUi: boolean;
 }
 
-class UI extends Component<IUIProps> {
-  state = {
-    leftOffset: 0
-  };
+function calculateLeftOffset() {
+  return window.innerWidth / 2 - GAME_WIDTH / 2;
+};
 
-  componentDidMount() {
-    this.setState({ leftOffset: this.calculateLeftOffset() });
+function UI({ showUi }: IUIProps) {
+  const [leftOffset, setLeftOffset] = useState(calculateLeftOffset());
 
-    window.addEventListener("resize", () => {
-      this.setState({ leftOffset: this.calculateLeftOffset() });
-    });
+  function handleResize() {
+    setLeftOffset(calculateLeftOffset);
   }
 
-  calculateLeftOffset = () => {
-    return window.innerWidth / 2 - GAME_WIDTH / 2;
-  };
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-  render() {
-    const { showUi } = this.props;
-    const { leftOffset } = this.state;
-    return (
+  const transitions = useTransition(showUi, null, ({
+    from: { marginTop: -100 },
+    enter: { marginTop: 0 },
+    leave: { marginTop: -100 },
+  }));
+
+  return (
+    <div>
+      {/* Left */}
+      <div
+        style={{
+          position: "absolute",
+          left: leftOffset,
+          width: LEFT_UI_WIDTH,
+          height: GAME_HEIGHT,
+          backgroundColor: "yellow",
+          opacity: 0.5
+        }}
+      />
+      {/* Top */}
       <div>
-        {/* Left */}
-        <div
-          style={{
-            position: "absolute",
-            left: leftOffset,
-            width: LEFT_UI_WIDTH,
-            height: GAME_HEIGHT,
-            backgroundColor: "yellow",
-            opacity: 0.5
-          }}
-        />
-        {/* Top */}
-        <div>
-          <Transition
-            items={showUi}
-            from={{ marginTop: -100 }}
-            enter={{ marginTop: 0 }}
-            leave={{ marginTop: -100 }}
-          >
-            {show =>
-              show &&
-              (props => (
-                <div
-                  style={{
-                    ...props,
-                    position: "absolute",
-                    width: GAME_WIDTH,
-                    height: 100,
-                    top: 0,
-                    backgroundColor: "#fcfcfc"
-                  }}
-                />
-              ))
-            }
-          </Transition>
-        </div>
+        {transitions.map(({ item, key, props }) => item &&
+          <animated.div
+            key={key}
+            style={{
+              ...props,
+              position: "absolute",
+              width: GAME_WIDTH,
+              height: 100,
+              top: 0,
+              backgroundColor: "#fcfcfc"
+            }}
+          />
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = ({ showUi }: { showUi: boolean }) => ({
