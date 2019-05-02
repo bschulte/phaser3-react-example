@@ -11,7 +11,6 @@ export default class IGame extends React.Component<IGameProps, any> {
   componentDidMount() {
     const config: GameConfig = {
       type: Phaser.AUTO,
-      pixelArt: true,
       width: GAME_WIDTH,
       height: GAME_HEIGHT,
       parent: "phaser-game",
